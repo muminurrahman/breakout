@@ -6,8 +6,8 @@ class Paddle {
     this.h = 10;
 
     this.render = function () {
-      fill("blue");
-      rect(this.x, this.y, this.w, this.h);
+      fill(0, 0, 255);
+      rect(this.x, this.y, this.w, this.h, this.w/20);
     }
 
     this.move = function (dir) {

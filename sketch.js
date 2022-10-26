@@ -1,14 +1,14 @@
 "use strict"
 
-let pressed, rows, cols, total, wall, ball, player, lives;
-let state = titleScreen;
+let pressed, rows, cols, total, wall, ball, player, state; 
+let lives = 10;
 
 function setup() {
   createCanvas(400, 600);
   textAlign(CENTER);
   rectMode(CENTER);
   noCursor();
-  reset(1);
+  reset(1, 3);
 }
 
 function draw() {
@@ -25,12 +25,11 @@ function keyPressed() {
 function reset(r) {
   pressed = 0;
   rows = r;
-  cols = 8;
+  cols = 1;
   total = rows * cols;
   wall = [];
   ball = new Ball();
   player = new Paddle();
-  lives = 3;
 
   for (let i = 0; i < cols; i++) {
     wall[i] = [];
@@ -38,6 +37,8 @@ function reset(r) {
       wall[i][j] = new Brick(i * 50 + 25, j * 25 + 30);
     }
   }
+
+  state = titleScreen;
 }
 
 function titleScreen() {
@@ -77,6 +78,7 @@ function playScreen() {
 
     if(lives < 1) {
       reset(1);
+      lives = 3;
       state = loseScreen;
     }
   }

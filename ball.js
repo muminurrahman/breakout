@@ -7,7 +7,7 @@ class Ball {
     this.ySpeed = 0;
 
     this.render = function () {
-      fill("red");
+      fill(255, 0, 0);
       ellipse(this.x, this.y, this.r * 2);
     }
 

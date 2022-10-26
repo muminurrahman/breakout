@@ -4,7 +4,7 @@ class Brick {
     this.y = y;
     this.w = 50;
     this.h = 25;
-    this.col = color(200);
+    this.col = color(195);
     this.count = 3;
 
     this.render = function () {
