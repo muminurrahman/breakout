@@ -1,7 +1,7 @@
 "use strict"
 
 let pressed, rows, cols, total, wall, ball, player, state; 
-let lives = 10;
+let lives = 3;
 
 function setup() {
   createCanvas(400, 600);
@@ -17,15 +17,14 @@ function draw() {
 }
 
 function keyPressed() {
-  if (keyCode === ENTER && state !== playScreen) {
+  if (keyCode === ENTER && state !== playScreen)
     state = playScreen;
-  }
 }
 
 function reset(r) {
   pressed = 0;
   rows = r;
-  cols = 1;
+  cols = 8;
   total = rows * cols;
   wall = [];
   ball = new Ball();
