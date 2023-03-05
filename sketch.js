@@ -1,13 +1,19 @@
 "use strict"
 
 let pressed, rows, cols, total, wall, ball, player, state; 
-let lives = 3;
+let level = 1, lives = 3; 
+let titleScreen, levelScreen, loseScreen;
 
 function setup() {
   createCanvas(400, 600);
   textAlign(CENTER);
   rectMode(CENTER);
   noCursor();
+
+  titleScreen = gameScreen("blue", "BREAKOUT");
+  loseScreen = gameScreen("red", "GAME OVER", "re");
+  levelScreen = gameScreen("blue", "Level " + level);
+
   reset(1, 3);
 }
 
@@ -40,13 +46,21 @@ function reset(r) {
   state = titleScreen;
 }
 
-function titleScreen() {
-  textSize(40);
-  fill("blue");
-  text("BREAKOUT", width / 2, height / 2);
-  textSize(25);
+function gameScreen(col, title, str="") {
+  return function () {
+    textSize(40);
+    fill(col);
+    text(title, width / 2, height / 2);
+    textSize(25);
+    fill("white");
+    text("Press ENTER to " + str + "start", width / 2, height / 2 + 40);
+  }
+}
+
+function displayText(str, n, x) {
+  textSize(width / 16 - 10);
   fill("white");
-  text("Press ENTER to start", width / 2, height / 2 + 40);
+  text(str + ": " + n, x - 30, 13);
 }
 
 function playScreen() {
@@ -70,7 +84,7 @@ function playScreen() {
   ball.move();
   ball.bounce();
   ball.collides(player);
-  if (ball.y - ball.r * 2 > height) {
+  if (ball.y - ball.r > height) {
     --lives;
     ball = new Ball(); // temp bug fix
     pressed = 0;
@@ -87,41 +101,11 @@ function playScreen() {
   if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) player.move(9);
   if (keyIsDown(32) && ++pressed == 1) ball.setVelocity(7);
 
-  displayLevel();
-  displayLives();
-
+  displayText("Level", level, 60);
+  displayText("Lives", lives, width);
+  
   if (total === 0) {
     reset(++rows);
     state = levelScreen;
   }
-}
-
-function displayLevel() {
-  textSize(16);
-  fill("white");
-  text("Level: " + rows, 30, 13);
-}
-
-function displayLives() {
-  textSize(16);
-  fill("white");
-  text("Lives: " + lives, width-30, 13);
-}
-
-function levelScreen() {
-  textSize(40);
-  fill("blue");
-  text("Level " + rows, width / 2, height / 2);
-  textSize(25);
-  fill("white");
-  text("Press ENTER to start", width / 2, height / 2 + 40);
-}
-
-function loseScreen() {
-  textSize(40);
-  fill("red");
-  text("GAME OVER", width / 2, height / 2);
-  textSize(25);
-  fill("white");
-  text("Press ENTER to restart", width / 2, height / 2 + 40);
 }
