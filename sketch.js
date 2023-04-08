@@ -1,7 +1,7 @@
 "use strict"
 
 let pressed, rows, cols, total, wall, ball, player, state; 
-let level = 1, lives = 3; 
+let level, lives; 
 let titleScreen, levelScreen, loseScreen;
 
 function setup() {
@@ -10,11 +10,13 @@ function setup() {
   rectMode(CENTER);
   noCursor();
 
+  level = 1, lives = 3
+
   titleScreen = gameScreen("blue", "BREAKOUT");
   loseScreen = gameScreen("red", "GAME OVER", "re");
-  levelScreen = gameScreen("blue", "Level " + level);
 
-  reset(1, 3);
+  reset(level);
+  state = titleScreen;
 }
 
 function draw() {
@@ -42,8 +44,6 @@ function reset(r) {
       wall[i][j] = new Brick(i * 50 + 25, j * 25 + 30);
     }
   }
-
-  state = titleScreen;
 }
 
 function gameScreen(col, title, str="") {
@@ -86,14 +86,16 @@ function playScreen() {
   ball.collides(player);
   if (ball.y - ball.r > height) {
     --lives;
-    ball = new Ball(); // temp bug fix
-    pressed = 0;
 
     if(lives < 1) {
-      reset(1);
-      lives = 3;
       state = loseScreen;
+      level = 1;
+      lives = 3;
+      reset(level);
     }
+
+    pressed = 0;
+    ball = new Ball(); // temp bug fix
   }
 
   player.render();
@@ -105,7 +107,8 @@ function playScreen() {
   displayText("Lives", lives, width);
   
   if (total === 0) {
-    reset(++rows);
+    reset(++level);
+    levelScreen = gameScreen("blue", "Level " + level);
     state = levelScreen;
   }
 }
